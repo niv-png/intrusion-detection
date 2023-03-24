@@ -36,3 +36,9 @@ print('Number of duplicate entries:', duplicates.sum())
 df = df.drop_duplicates()
 print('Number of duplicate entries after removing:', df.duplicated().sum())
 df.label.value_counts()
+
+#AJ -Convert categorical data into numerical data
+df = pd.read_csv('kddcup99_csv.csv')
+df = pd.get_dummies(df)
+df.to_csv('newkddcup99.csv', index=False)
+df = pd.get_dummies(df, columns=['protocol_type', 'service', 'flag', 'label'])
