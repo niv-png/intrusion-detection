@@ -39,7 +39,6 @@ df.label.value_counts()
 
 #AJ -Convert categorical data into numerical data
 df = pd.read_csv('kddcup99_csv.csv')
-df = pd.get_dummies(df)
 df = pd.get_dummies(df, columns=['protocol_type', 'service', 'flag', 'label'])
 df.to_csv('newkddcup99.csv', index=False)
 
