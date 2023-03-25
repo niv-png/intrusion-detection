@@ -46,7 +46,7 @@ X = df.drop('label_normal', axis=1) # Drop the target variable
 Y = df['label_normal']
  
 #SK split the dataset (30% for test data and 70% for train data >> We can change it)
-X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.3, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.3, random_state=0)
 
 #SK Save the training and testing datasets into separate CSV files
 X_train.to_csv('train_data.csv', index=False)
