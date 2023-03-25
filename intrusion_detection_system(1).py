@@ -42,15 +42,40 @@ df.label.value_counts()
 df = pd.get_dummies(df, columns=['protocol_type', 'service', 'flag', 'label'])
 df.to_csv('newkddcup99.csv', index=False)
 
+#NS
+corr = df.corr()
+  
+plt.figure(figsize =(15, 12))
+  
+sns.heatmap(corr)
+  
+plt.show()
+
+df.drop('lnum_access_files', axis = 1, inplace = True)
+df.drop('is_guest_login', axis = 1, inplace = True)
+#NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
+df.drop('srv_rerror_rate', axis = 1, inplace = True)
+#NS - This variable is highly correlated with srv_serror_rate and should be ignored for analysis.
+df.drop('dst_host_srv_serror_rate', axis = 1, inplace = True)
+#NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
+df.drop('dst_host_serror_rate', axis = 1, inplace = True)
+#NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
+df.drop('dst_host_rerror_rate', axis = 1, inplace = True)
+#NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
+df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
+#NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
+df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
+df 
+
 #SK get the locations to spilt the dataset
-X = df.drop('label_normal', axis=1) # Drop the target variable
-Y = df['label_normal']
+#X = df.drop('label_normal', axis=1) # Drop the target variable
+#Y = df['label_normal']
  
 #SK split the dataset (30% for test data and 70% for train data >> We can change it)
-X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.3, random_state=0)
+#X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.3, random_state=0)
 
 #SK Save the training and testing datasets into separate CSV files
-X_train.to_csv('train_data.csv', index=False)
-X_test.to_csv('test_data.csv', index=False)
-Y_train.to_csv('train_labels.csv', index=False)
-Y_test.to_csv('test_labels.csv', index=False)
+#X_train.to_csv('train_data.csv', index=False)
+#X_test.to_csv('test_data.csv', index=False)
+#Y_train.to_csv('train_labels.csv', index=False)
+#Y_test.to_csv('test_labels.csv', index=False)
