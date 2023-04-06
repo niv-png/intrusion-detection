@@ -12,6 +12,13 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+import time
+
+#SK - libraries for Evaluate and measure the accuracy of the model
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 
 #n -libraries for the files in google drive
 from pydrive.auth import GoogleAuth
@@ -67,18 +74,6 @@ df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
 df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
 df 
 
-#SK get the locations to spilt the dataset
-#X = df.drop('label_normal', axis=1) # Drop the target variable
-#Y = df['label_normal']
- 
-#SK split the dataset (30% for test data and 70% for train data >> We can change it)
-#X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.3, random_state=0)
-
-#SK Save the training and testing datasets into separate CSV files
-#X_train.to_csv('train_data.csv', index=False)
-#X_test.to_csv('test_data.csv', index=False)
-#Y_train.to_csv('train_labels.csv', index=False)
-#Y_test.to_csv('test_labels.csv', index=False)
 
 #AlAnoud AlJebreen -Feature Selection PCA
 from sklearn.decomposition import PCA
@@ -95,3 +90,36 @@ y = df['label_normal']
 model = LinearRegression()
 rfe = RFE(model, n_features_to_select=3)
 rfe.fit(x,y) 
+
+#SK - Split the dataset into training and testing sets (30% for test data and 70% for train data >> We can change it)
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+#print(X_train.shape, X_test.shape, Y_train.shape, Y_test.shape)
+
+#SK - Save the training and testing datasets into separate CSV files
+X_train.to_csv('train_data.csv', index=False)
+X_test.to_csv('test_data.csv', index=False)
+Y_train.to_csv('train_labels.csv', index=False)
+Y_test.to_csv('test_labels.csv', index=False)
+
+
+#SK - First Model: Decision tree 
+#SK Create the decision tree classifier
+dt_classifier = DecisionTreeClassifier(random_state=42)
+
+#SK - Train the classifier on the training data
+start = time.time()
+dt_classifier.fit(X_train, Y_train)
+print("Processing time for Training using Decision Tree Classifier: %s seconds " % (time.time() - start))
+
+#SK - Test the Model 
+start = time.time()
+Y_pred = dt_classifier.predict(X_test)
+print("Processing time for Testing using Decision Tree Classifier: %s seconds " % (time.time() - start)) 
+
+#SK - Evaluate and measure the accuracy of the model
+accuracy = accuracy_score(Y_test, Y_pred)
+recall= recall_score(Y_test, Y_pred )
+precision= precision_score(Y_test, Y_pred )
+print("The accuracy of Decision Tree Classifier is : {:.2f}%".format(accuracy*100))
+print("Recall = " .format(recall*100))
+print("Precison = ".format(precision*100))
