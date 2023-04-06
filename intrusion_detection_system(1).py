@@ -82,24 +82,16 @@ df
 
 #AlAnoud AlJebreen -Feature Selection PCA
 from sklearn.decomposition import PCA
-from sklearn.datasets import /content/drive/MyDrive/kddcup99_csv.csv
-
-kddcup99 = /content/drive/MyDrive/kddcup99_csv.csv ()
-x = kddcup99.data
-y = kddcup99.target
-
+x = df.drop('label_normal', axis=1)
+y = df['label_normal']
 pca = PCA(n_components=3)
 x_pca = pca.fit_transform(x)
 
 #AlAnoud AlJebreen -Feature Selection RFE 
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LinearRegression
-from sklearn.datasets import /content/drive/MyDrive/kddcup99_csv.csv
-
-kddcup99 = /content/drive/MyDrive/kddcup99_csv.csv
-x = kddcup99.data
-y = kddcup99.target
-
+x = df.drop('label_normal', axis=1)
+y = df['label_normal']
 model = LinearRegression()
 rfe = RFE(model, n_features_to_select=3)
 rfe.fit(x,y) 
