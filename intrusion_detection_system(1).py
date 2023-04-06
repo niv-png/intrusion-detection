@@ -15,10 +15,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 import time
 
-#SK - libraries for Evaluate and measure the accuracy of the model
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
+#N - updated: libraries for Evaluate and measure the accuracy of the model
+from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
 #n -libraries for the files in google drive
 from pydrive.auth import GoogleAuth
@@ -120,6 +118,32 @@ print("Processing time for Testing using Decision Tree Classifier: %s seconds " 
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
+f1score = f1_score(Y_test, Y_pred, average=None)
 print("The accuracy of Decision Tree Classifier is : {:.2f}%".format(accuracy*100))
 print("Recall =  {:.2f} " .format(recall*100))
+print("Precison =  {:.2f} ".format(precision*100))
+print("F1-score: {:.2f}".format(f1))
+
+#N - Second Model: Random Forest
+from sklearn.ensemble import RandomForestClassifier
+
+# Create a random forest classifier with 100 trees
+rfc = RandomForestClassifier(n_estimators=100)
+
+# Train the model using the training data
+rfc.fit(X_train, Y_train)
+
+# Make predictions on the test data
+y_pred = rfc.predict(X_test)
+
+# Calculate the accuracy, f1-score,recall and precision
+accuracy = accuracy_score(Y_test, Y_pred)
+f1 = f1_score(Y_test, Y_pred)
+recall = recall_score(Y_test, Y_pred)
+precision = precision_score(Y_test, Y_pred)
+
+# Print the results
+print("Accuracy: {:.2f}%".format(accuracy * 100))
+print("F1-score: {:.2f}".format(f1))
+print("Recall: {:.2f}%".format(recall * 100))
 print("Precison =  {:.2f} ".format(precision*100))
