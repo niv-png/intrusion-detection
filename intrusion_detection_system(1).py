@@ -56,21 +56,23 @@ sns.heatmap(corr)
   
 plt.show()
 
-df.drop('lnum_access_files', axis = 1, inplace = True)
-df.drop('is_guest_login', axis = 1, inplace = True)
+#UPDATE: kept the unimportant columns to introduce a little noise
+
+#df.drop('lnum_access_files', axis = 1, inplace = True)
+#df.drop('is_guest_login', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-df.drop('srv_rerror_rate', axis = 1, inplace = True)
+#df.drop('srv_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_serror_rate and should be ignored for analysis.
-df.drop('dst_host_srv_serror_rate', axis = 1, inplace = True)
+#df.drop('dst_host_srv_serror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-df.drop('dst_host_serror_rate', axis = 1, inplace = True)
+#df.drop('dst_host_serror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
-df.drop('dst_host_rerror_rate', axis = 1, inplace = True)
+#df.drop('dst_host_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
+#df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
-df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
-df 
+#df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
+#df 
 
 
 #AlAnoud AlJebreen -Feature Selection PCA
