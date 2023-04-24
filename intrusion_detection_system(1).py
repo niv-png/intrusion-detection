@@ -16,7 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 import time
 
 #N - updated: libraries for Evaluate and measure the accuracy of the model
-from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
+from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score, confusion_matrix
 
 #n -libraries for the files in google drive
 from pydrive.auth import GoogleAuth
@@ -45,6 +45,14 @@ df.label.value_counts()
 
 #AlAnoud AlJebreen -Convert categorical data into numerical data
 df = pd.get_dummies(df, columns=['protocol_type', 'service', 'flag', 'label'])
+
+#NS - Normalization of dataset
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+df_normalized = scaler.fit_transform(df.drop('label_normal', axis=1))
+df_normalized = pd.DataFrame(df_normalized, columns=df.drop('label_normal', axis=1).columns)
+df_normalized = pd.concat([df_normalized, df['label_normal']], axis=1)
+
 df.to_csv('newkddcup99.csv', index=False)
 
 #NS
@@ -59,19 +67,19 @@ plt.show()
 #UPDATE: kept the unimportant columns to introduce a little noise
 
 #df.drop('lnum_access_files', axis = 1, inplace = True)
-#df.drop('is_guest_login', axis = 1, inplace = True)
+df.drop('is_guest_login', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-#df.drop('srv_rerror_rate', axis = 1, inplace = True)
+df.drop('srv_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_serror_rate and should be ignored for analysis.
-#df.drop('dst_host_srv_serror_rate', axis = 1, inplace = True)
+df.drop('dst_host_srv_serror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-#df.drop('dst_host_serror_rate', axis = 1, inplace = True)
+df.drop('dst_host_serror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
-#df.drop('dst_host_rerror_rate', axis = 1, inplace = True)
+df.drop('dst_host_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with rerror_rate and should be ignored for analysis.
-#df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
+df.drop('dst_host_srv_rerror_rate', axis = 1, inplace = True)
 #NS - This variable is highly correlated with srv_rerror_rate and should be ignored for analysis.
-#df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
+df.drop('dst_host_same_srv_rate', axis = 1, inplace = True)
 #df 
 
 
@@ -101,51 +109,61 @@ X_test.to_csv('test_data.csv', index=False)
 Y_train.to_csv('train_labels.csv', index=False)
 Y_test.to_csv('test_labels.csv', index=False)
 
+#NS - Create a decision tree classifier
+dtc = DecisionTreeClassifier()
 
-#SK - First Model: Decision tree 
-#SK Create the decision tree classifier
-dt_classifier = DecisionTreeClassifier(random_state=42)
-
-#SK - Train the classifier on the training data
+#SK - Train the model using the training data
 start = time.time()
-dt_classifier.fit(X_train, Y_train)
+dtc.fit(X_train, Y_train)
 print("Processing time for Training using Decision Tree Classifier: %s seconds " % (time.time() - start))
 
-#SK - Test the Model 
+#SK - Make predictions on the test data
 start = time.time()
-Y_pred = dt_classifier.predict(X_test)
+Y_pred = dtc.predict(X_test)
 print("Processing time for Testing using Decision Tree Classifier: %s seconds " % (time.time() - start)) 
 
-#SK - Evaluate and measure the accuracy of the model
+#NS - Updated - Calculate the accuracy, f1-score,recall, precision and confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
-f1score = f1_score(Y_test, Y_pred, average=None)
-print("The accuracy of Decision Tree Classifier is : {:.2f}%".format(accuracy*100))
-print("Recall =  {:.2f} " .format(recall*100))
-print("Precison =  {:.2f} ".format(precision*100))
-print("F1-score: {:.2f}".format(f1))
+f1score = f1_score(Y_test, Y_pred)
+conf_matrix = confusion_matrix(Y_test, Y_pred)
 
-#N - Second Model: Random Forest
+#NS - Print the results
+print("Decision Tree Classifier:")
+print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
+print("Recall = {:.4f} " .format(recall*100))
+print("Precison = {:.4f} ".format(precision*100))
+print("F1-score: ", f1score)
+print("Confusion Matrix:\n", conf_matrix)
+
+#NS - Second Model: Random Forest
 from sklearn.ensemble import RandomForestClassifier
 
-# Create a random forest classifier with 100 trees
+#NS - Create a random forest classifier with 100 trees
 rfc = RandomForestClassifier(n_estimators=100)
 
-# Train the model using the training data
+#NS - Train the model using the training data
+start = time.time()
 rfc.fit(X_train, Y_train)
+print("Processing time for Training using Random Forest Classifier: %s seconds " % (time.time() - start))
 
-# Make predictions on the test data
-y_pred = rfc.predict(X_test)
+#NS - Make predictions on the test data
+start = time.time()
+Y_pred = rfc.predict(X_test)
+print("Processing time for Testing using Random Forest Classifier: %s seconds " % (time.time() - start))
 
-# Calculate the accuracy, f1-score,recall and precision
+#NS - Calculate the accuracy, f1-score,recall and precision
 accuracy = accuracy_score(Y_test, Y_pred)
-f1 = f1_score(Y_test, Y_pred)
-recall = recall_score(Y_test, Y_pred)
-precision = precision_score(Y_test, Y_pred)
+recall= recall_score(Y_test, Y_pred )
+precision= precision_score(Y_test, Y_pred )
+f1score = f1_score(Y_test, Y_pred)
+conf_matrix = confusion_matrix(Y_test, Y_pred)
 
-# Print the results
-print("Accuracy: {:.2f}%".format(accuracy * 100))
-print("F1-score: {:.2f}".format(f1))
-print("Recall: {:.2f}%".format(recall * 100))
-print("Precison =  {:.2f} ".format(precision*100))
+#NS - Print the results
+print("Random Forest Classifier:")
+print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
+print("Recall = {:.4f} " .format(recall*100))
+print("Precison = {:.4f} ".format(precision*100))
+print("F1-score: ", f1score)
+print("Confusion Matrix:\n", conf_matrix)
