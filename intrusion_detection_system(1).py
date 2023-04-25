@@ -167,3 +167,63 @@ print("Recall = {:.4f} " .format(recall*100))
 print("Precison = {:.4f} ".format(precision*100))
 print("F1-score: ", f1score)
 print("Confusion Matrix:\n", conf_matrix)
+
+#NS Third Model - Gaussian Naive Bayes
+from sklearn.naive_bayes import GaussianNB
+
+gbc = GaussianNB()
+
+#NS - Train the model using the training data
+start = time.time()
+gbc.fit(X_train, Y_train)
+print("Processing time for Training using Gaussian Naive Bayes Classifier: %s seconds " % (time.time() - start))
+
+#NS - Make predictions on the test data
+start = time.time()
+Y_pred_gbc = gbc.predict(X_test)
+print("Processing time for Testing using Gaussian Naive Bayes Classifier: %s seconds " % (time.time() - start))
+
+#NS - Calculate the accuracy, f1-score,recall and precision
+accuracy = accuracy_score(Y_test, Y_pred_gbc)
+recall= recall_score(Y_test, Y_pred_gbc )
+precision= precision_score(Y_test, Y_pred_gbc )
+f1score = f1_score(Y_test, Y_pred_gbc)
+conf_matrix = confusion_matrix(Y_test, Y_pred_gbc)
+
+#NS - Print the results
+print("Gaussian Naive Bayes Classifier:")
+print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
+print("Recall = {:.4f} " .format(recall*100))
+print("Precison = {:.4f} ".format(precision*100))
+print("F1-score: ", f1score)
+print("Confusion Matrix:\n", conf_matrix)
+
+#NS Fourth Model - Gaussian Naive Bayes
+from xgboost import XGBClassifier
+
+xgb = XGBClassifier()
+
+#NS - Train the model using the training data
+start = time.time()
+xgb.fit(X_train, Y_train)
+print("Processing time for Training using Random Forest Classifier: %s seconds " % (time.time() - start))
+
+#NS - Make predictions on the test data
+start = time.time()
+Y_pred_xgb = xgb.predict(X_test)
+print("Processing time for Testing using Random Forest Classifier: %s seconds " % (time.time() - start))
+
+#NS - Calculate the accuracy, f1-score,recall and precision
+accuracy = accuracy_score(Y_test, Y_pred_xgb)
+recall= recall_score(Y_test, Y_pred_xgb )
+precision= precision_score(Y_test, Y_pred_xgb )
+f1score = f1_score(Y_test, Y_pred_xgb)
+conf_matrix = confusion_matrix(Y_test, Y_pred_xgb)
+
+#NS - Print the results
+print("XG Boost Classifier:")
+print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
+print("Recall = {:.4f} " .format(recall*100))
+print("Precison = {:.4f} ".format(precision*100))
+print("F1-score: ", f1score)
+print("Confusion Matrix:\n", conf_matrix)
