@@ -109,7 +109,7 @@ X_test.to_csv('test_data.csv', index=False)
 Y_train.to_csv('train_labels.csv', index=False)
 Y_test.to_csv('test_labels.csv', index=False)
 
-#NS - Create a decision tree classifier
+#SK - First Model: Decision Tree classifier
 dtc = DecisionTreeClassifier()
 
 #SK - Train the model using the training data
@@ -122,14 +122,14 @@ start = time.time()
 Y_pred = dtc.predict(X_test)
 print("Processing time for Testing using Decision Tree Classifier: %s seconds " % (time.time() - start)) 
 
-#NS - Updated - Calculate the accuracy, f1-score,recall, precision and confusion matrix
+#SK-NS - Updated - Calculate the accuracy, f1-score,recall, precision and confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
 f1score = f1_score(Y_test, Y_pred)
 conf_matrix = confusion_matrix(Y_test, Y_pred)
 
-#NS - Print the results
+#SK - Print the results
 print("Decision Tree Classifier:")
 print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
 print("Recall = {:.4f} " .format(recall*100))
