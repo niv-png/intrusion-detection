@@ -99,7 +99,7 @@ model = LinearRegression()
 rfe = RFE(model, n_features_to_select=3)
 rfe.fit(x,y) 
 
-#SK - Split the dataset into training and testing sets (30% for test data and 70% for train data >> We can change it)
+#SK - Split the dataset into training and testing sets (40% for test data and 60% for train data)
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.4, random_state=42)
 #print(X_train.shape, X_test.shape, Y_train.shape, Y_test.shape)
 
