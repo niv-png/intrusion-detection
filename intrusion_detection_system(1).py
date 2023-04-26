@@ -12,7 +12,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
 import time
 
 #N - updated: libraries for Evaluate and measure the accuracy of the model
@@ -111,6 +110,7 @@ Y_train.to_csv('train_labels.csv', index=False)
 Y_test.to_csv('test_labels.csv', index=False)
 
 #SK - First Model: Decision Tree classifier
+from sklearn.tree import DecisionTreeClassifier
 dtc = DecisionTreeClassifier()
 
 #SK - Train the model using the training data
