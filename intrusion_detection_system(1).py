@@ -102,6 +102,7 @@ rfe.fit(x,y)
 #SK - Split the dataset into training and testing sets (40% for test data and 60% for train data)
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.4, random_state=42)
 #print(X_train.shape, X_test.shape, Y_train.shape, Y_test.shape)
+print(X_train.shape, X_test.shape, Y_train.shape, Y_test.shape) #print the shapes of the training and test sets 
 
 #SK - Save the training and testing datasets into separate CSV files
 X_train.to_csv('train_data.csv', index=False)
