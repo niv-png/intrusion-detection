@@ -122,7 +122,8 @@ start = time.time()
 Y_pred = dtc.predict(X_test)
 print("Processing time for Testing using Decision Tree Classifier: %s seconds " % (time.time() - start)) 
 
-#SK-NS - Updated - Calculate the accuracy, f1-score,recall, precision and confusion matrix
+#SK - Calculate the accuracy, f1-score,recall, precision.
+#NS -  Updated - calculate confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
