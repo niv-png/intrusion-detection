@@ -114,24 +114,38 @@ from sklearn.tree import DecisionTreeClassifier
 dtc = DecisionTreeClassifier()
 
 #SK - Train the model using the training data
+#NS - Added specific columns for training and testing
+#X_train_subset = X_train[['label_phf', 'label_pod', 'label_portsweep', 'label_rootkit',
+       #'label_satan', 'label_smurf', 'label_spy', 'label_teardrop',
+       #'label_warezclient', 'label_warezmaster']]
 start = time.time()
 dtc.fit(X_train, Y_train)
 print("Processing time for Training using Decision Tree Classifier: %s seconds " % (time.time() - start))
 
 #SK - Make predictions on the test data
+#NS - Added specific columns for training and testing
+#X_test_subset = X_test[['label_phf', 'label_pod', 'label_portsweep', 'label_rootkit',
+       #'label_satan', 'label_smurf', 'label_spy', 'label_teardrop',
+       #'label_warezclient', 'label_warezmaster']]
 start = time.time()
 Y_pred = dtc.predict(X_test)
 print("Processing time for Testing using Decision Tree Classifier: %s seconds " % (time.time() - start)) 
 
-#SK - Calculate the accuracy, f1-score,recall, precision.
-#NS -  Updated - calculate confusion matrix
+#SK - Calculate the accuracy, recall, precision.
+#NS -  Updated - calculate f1-score, confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
 f1score = f1_score(Y_test, Y_pred)
 conf_matrix = confusion_matrix(Y_test, Y_pred)
 
+#NS - Perform cross-validation and get the mean accuracy score
+scores = cross_val_score(dtc, X_train, Y_train, cv=10)
+print("Cross-validation scores:", scores)
+print("Mean cross-validation score:", scores.mean())
+
 #SK - Print the results
+#NS - Updated the decimal required for better comparison
 print("Decision Tree Classifier:")
 print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
 print("Recall = {:.4f} " .format(recall*100))
@@ -155,12 +169,17 @@ start = time.time()
 Y_pred = rfc.predict(X_test)
 print("Processing time for Testing using Random Forest Classifier: %s seconds " % (time.time() - start))
 
-#NS - Calculate the accuracy, f1-score,recall and precision
+#NS - Calculate the accuracy, f1-score,recall, precision and confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred)
 recall= recall_score(Y_test, Y_pred )
 precision= precision_score(Y_test, Y_pred )
 f1score = f1_score(Y_test, Y_pred)
 conf_matrix = confusion_matrix(Y_test, Y_pred)
+
+#NS - Perform cross-validation and get the mean accuracy score
+scores = cross_val_score(dtc, X_train, Y_train, cv=10)
+print("Cross-validation scores:", scores)
+print("Mean cross-validation score:", scores.mean())
 
 #NS - Print the results
 print("Random Forest Classifier:")
@@ -185,12 +204,17 @@ start = time.time()
 Y_pred_gbc = gbc.predict(X_test)
 print("Processing time for Testing using Gaussian Naive Bayes Classifier: %s seconds " % (time.time() - start))
 
-#NS - Calculate the accuracy, f1-score,recall and precision
+#NS - Calculate the accuracy, f1-score,recall, precision and confusion matrix
 accuracy = accuracy_score(Y_test, Y_pred_gbc)
 recall= recall_score(Y_test, Y_pred_gbc )
 precision= precision_score(Y_test, Y_pred_gbc )
 f1score = f1_score(Y_test, Y_pred_gbc)
 conf_matrix = confusion_matrix(Y_test, Y_pred_gbc)
+
+#NS - Perform cross-validation and get the mean accuracy score
+scores = cross_val_score(dtc, X_train, Y_train, cv=10)
+print("Cross-validation scores:", scores)
+print("Mean cross-validation score:", scores.mean())
 
 #NS - Print the results
 print("Gaussian Naive Bayes Classifier:")
@@ -200,7 +224,7 @@ print("Precison = {:.4f} ".format(precision*100))
 print("F1-score: ", f1score)
 print("Confusion Matrix:\n", conf_matrix)
 
-#NS Fourth Model - Gaussian Naive Bayes
+#NS Fourth Model - XGBoost Classifier
 from xgboost import XGBClassifier
 
 xgb = XGBClassifier()
@@ -208,12 +232,12 @@ xgb = XGBClassifier()
 #NS - Train the model using the training data
 start = time.time()
 xgb.fit(X_train, Y_train)
-print("Processing time for Training using Random Forest Classifier: %s seconds " % (time.time() - start))
+print("Processing time for Training using XGBoost Classifier: %s seconds " % (time.time() - start))
 
 #NS - Make predictions on the test data
 start = time.time()
 Y_pred_xgb = xgb.predict(X_test)
-print("Processing time for Testing using Random Forest Classifier: %s seconds " % (time.time() - start))
+print("Processing time for Testing using XGBoost Classifier: %s seconds " % (time.time() - start))
 
 #NS - Calculate the accuracy, f1-score,recall and precision
 accuracy = accuracy_score(Y_test, Y_pred_xgb)
@@ -222,6 +246,11 @@ precision= precision_score(Y_test, Y_pred_xgb )
 f1score = f1_score(Y_test, Y_pred_xgb)
 conf_matrix = confusion_matrix(Y_test, Y_pred_xgb)
 
+#NS - Perform cross-validation and get the mean accuracy score
+scores = cross_val_score(dtc, X_train, Y_train, cv=10)
+print("Cross-validation scores:", scores)
+print("Mean cross-validation score:", scores.mean())
+
 #NS - Print the results
 print("XG Boost Classifier:")
 print("The accuracy of the model is : {:.4f}%".format(accuracy*100))
@@ -229,3 +258,36 @@ print("Recall = {:.4f} " .format(recall*100))
 print("Precison = {:.4f} ".format(precision*100))
 print("F1-score: ", f1score)
 print("Confusion Matrix:\n", conf_matrix)
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+#NS - Define metrics for all models
+metrics = {
+    'Decision Tree': [0.7656, 0.6203, 1.00, 0.6304],
+    'Random Forest': [0.9998, 0.9997, 0.9999, 0.9998],
+    'Gaussian Naive Bayes': [0.8277, 0.7071, 0.9980, 0.7492],
+    'XGBoost': [0.9997, 0.9997, 0.9997, 0.9997]
+}
+
+#NS - Create a bar plot 
+fig, ax = plt.subplots(figsize=(10, 6))
+
+bar_width = 0.2
+opacity = 0.8
+index = np.arange(len(metrics))
+
+rects1 = ax.bar(index, metrics['Decision Tree'], bar_width, alpha=opacity, color='b', label='Decision Tree')
+rects2 = ax.bar(index + bar_width, metrics['Random Forest'], bar_width, alpha=opacity, color='g', label='Random Forest')
+rects3 = ax.bar(index + 2*bar_width, metrics['Gaussian Naive Bayes'], bar_width, alpha=opacity, color='r', label='Gaussian Naive Bayes')
+rects4 = ax.bar(index + 3*bar_width, metrics['XGBoost'], bar_width, alpha=opacity, color='c', label='XGBoost')
+
+ax.set_xlabel('Metrics')
+ax.set_ylabel('Scores')
+ax.set_title('Comparison of ML Models')
+ax.set_xticks(index + bar_width)
+ax.set_xticklabels(('F1-score', 'Precision', 'Recall', 'Accuracy'))
+ax.legend()
+
+plt.tight_layout()
+plt.show()
