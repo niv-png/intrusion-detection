@@ -13,6 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import time
+from sklearn.model_selection import cross_val_score
 
 #N - updated: libraries for Evaluate and measure the accuracy of the model
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score, confusion_matrix
